@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-{% block title %}{{ t('receipts_add_title', default='Add Money In') }} - FiCore{% endblock %}
+{% block title %}{{ t('receipts_add_title', default='Record Sale') }} - FiCore{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <div class="page-title">
-        <h1>{{ t('receipts_add_title', default='Add Money In') }}</h1>
-        <small class="subtext">{{ t('receipts_subtitle', default='Kuɗin Da Aka Biyaka') }}</small>
+        <h1>{{ t('receipts_add_title', default='Record Sale') }}</h1>
+        <small class="subtext">{{ t('receipts_subtitle', default='Kudaden Sayarwa') }}</small>
     </div>
     <form action="{{ url_for('receipts.add') }}" method="POST" enctype="multipart/form-data" class="row g-3">
         {{ form.hidden_tag() }}
         <input type="hidden" name="type" value="receipt">
         <div class="col-12">
-            <label for="party_name" class="form-label">{{ t('receipts_party_name', default='Party Name') }}</label>
+            <label for="party_name" class="form-label">{{ t('receipts_party_name', default='Customer Name') }}</label>
             {{ form.party_name(class="form-control", required=True) }}
             {% if form.party_name.errors %}
                 <p class="text-danger mt-1">{{ form.party_name.errors[0] }}</p>

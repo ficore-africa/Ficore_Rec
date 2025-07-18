@@ -1,18 +1,18 @@
 {% extends "base.html" %}
-{% block title %}{{ t('receipts_title', default='Money In') }} - FiCore{% endblock %}
+{% block title %}{{ t('receipts_title', default='Sales Income') }} - FiCore{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <div class="page-title">
-        <h1>{{ t('receipts_title', default='Money In') }}</h1>
-        <small class="subtext">{{ t('receipts_subtitle', default='Kuɗin Da Aka Biyaka') }}</small>
+        <h1>{{ t('receipts_title', default='Sales Income') }}</h1>
+        <small class="subtext">{{ t('receipts_subtitle', default='Kudaden Sayarwa') }}</small>
     </div>
-    <a href="{{ url_for('receipts.add') }}" class="btn btn-primary mb-4">{{ t('receipts_add_title', default='Add Money In') }}</a>
+    <a href="{{ url_for('receipts.add') }}" class="btn btn-primary mb-4">{{ t('receipts_add_title', default='Record Sale') }}</a>
     {% if receipts|length > 0 %}
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead class="table-light">
                     <tr>
-                        <th>{{ t('receipts_party_name', default='Party Name') }}</th>
+                        <th>{{ t('receipts_party_name', default='Customer Name') }}</th>
                         <th>{{ t('general_amount', default='Amount') }}</th>
                         <th>{{ t('general_date', default='Date') }}</th>
                         <th>{{ t('receipts_payment_method', default='Payment Method') }}</th>
@@ -23,7 +23,7 @@
                 <tbody>
                     {% for receipt in receipts %}
                         <tr>
-                            <td data-label="{{ t('receipts_party_name', default='Party Name') }}">{{ receipt.party_name }}</td>
+                            <td data-label="{{ t('receipts_party_name', default='Customer Name') }}">{{ receipt.party_name }}</td>
                             <td data-label="{{ t('general_amount', default='Amount') }}">{{ format_currency(receipt.amount) }}</td>
                             <td data-label="{{ t('general_date', default='Date') }}">{{ format_date(receipt.created_at) }}</td>
                             <td data-label="{{ t('receipts_payment_method', default='Payment Method') }}">{{ receipt.method or '-' }}</td>
@@ -39,7 +39,7 @@
                                     <a href="{{ url_for('receipts.generate_pdf', id=receipt._id) }}" 
                                        class="btn btn-success btn-sm"
                                        data-bs-toggle="tooltip" 
-                                       title="{{ t('receipts_download_receipt', default='Download Receipt') }}">
+                                       title="{{ t('receipts_download_receipt', default='Download Sales Receipt') }}">
                                         {{ t('general_download_pdf', default='PDF') }}
                                     </a>
                                     <button type="button" class="btn btn-warning btn-sm share-btn" 
@@ -48,7 +48,7 @@
                                             data-amount="{{ receipt.amount }}"
                                             data-date="{{ format_date(receipt.created_at) }}"
                                             data-bs-toggle="tooltip" 
-                                            title="{{ t('receipts_share_receipt', default='Share Receipt') }}">
+                                            title="{{ t('receipts_share_receipt', default='Share Sales Receipt') }}">
                                         {{ t('general_share', default='Share') }}
                                     </button>
                                     <a href="{{ url_for('receipts.edit', id=receipt._id) }}" 
@@ -75,40 +75,40 @@
         </div>
     {% else %}
         <div class="text-center py-5">
-            <p class="text-muted">{{ t('receipts_no_records', default='No money in recorded') }}</p>
-            <p class="mt-2">{{ t('receipts_add_first', default='Start by logging your first money in.') }}</p>
+            <p class="text-muted">{{ t('receipts_no_records', default='No sales recorded') }}</p>
+            <p class="mt-2">{{ t('receipts_add_first', default='Start by recording your first sale.') }}</p>
         </div>
     {% endif %}
 </div>
 
-<!-- Receipt Details Modal -->
+<!-- Sales Receipt Details Modal -->
 <div class="modal fade" id="receiptDetailsModal" tabindex="-1" aria-labelledby="receiptDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="receiptDetailsModalLabel">{{ t('receipts_receipt_details', default='Receipt Details') }}</h5>
+                <h5 class="modal-title" id="receiptDetailsModalLabel">{{ t('receipts_receipt_details', default='Sales Receipt Details') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ t('general_close', default='Close') }}"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>{{ t('receipts_party_name', default='Party Name') }}:</strong> <span id="detailPartyName"></span></p>
+                        <p><strong>{{ t('receipts_party_name', default='Customer Name') }}:</strong> <span id="detailPartyName"></span></p>
                         <p><strong>{{ t('general_amount', default='Amount') }}:</strong> <span id="detailAmount"></span></p>
                         <p><strong>{{ t('receipts_payment_method', default='Payment Method') }}:</strong> <span id="detailMethod"></span></p>
                     </div>
                     <div class="col-md-6">
                         <p><strong>{{ t('general_category', default='Category') }}:</strong> <span id="detailCategory"></span></p>
                         <p><strong>{{ t('general_date', default='Date') }}:</strong> <span id="detailDate"></span></p>
-                        <p><strong>{{ t('receipts_receipt_id', default='Receipt ID') }}:</strong> <span id="detailReceiptId"></span></p>
+                        <p><strong>{{ t('receipts_receipt_id', default='Sales Receipt ID') }}:</strong> <span id="detailReceiptId"></span></p>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="downloadReceiptBtn">
-                    {{ t('receipts_download_receipt', default='Download Receipt') }}
+                    {{ t('receipts_download_receipt', default='Download Sales Receipt') }}
                 </button>
                 <button type="button" class="btn btn-info" id="shareReceiptBtn">
-                    {{ t('receipts_share_receipt', default='Share Receipt') }}
+                    {{ t('receipts_share_receipt', default='Share Sales Receipt') }}
                 </button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     {{ t('general_close', default='Close') }}
@@ -195,11 +195,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const date = this.dataset.date;
             const receiptId = this.dataset.id;
             
-            const message = `Receipt from FiCore Records\nPayer: ${name}\nAmount: {{ t('general_currency_symbol', default='₦') }}${amount}\nDate: ${date}\nReceipt ID: ${receiptId}`;
+            const message = `Sales Receipt from FiCore Records\nCustomer: ${name}\nAmount: {{ t('general_currency_symbol', default='₦') }}${amount}\nDate: ${date}\nSales Receipt ID: ${receiptId}`;
             
             if (navigator.share) {
                 navigator.share({
-                    title: '{{ t('receipts_ficore_receipt', default='FiCore Receipt') }}',
+                    title: '{{ t('receipts_ficore_receipt', default='FiCore Sales Receipt') }}',
                     text: message,
                     url: window.location.href
                 })
