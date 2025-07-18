@@ -4,6 +4,7 @@ Financial personality quiz translations for personal finance tools
 
 QUIZ_TRANSLATIONS = {
     'en': {
+        'financial_personality_quiz_title': 'Financial Personality Quiz',
         # Quiz-specific
         'quiz_financial_personality_quiz': 'Personality Quiz',
         'quiz_translations_title':'Personality Quiz',
@@ -138,6 +139,7 @@ QUIZ_TRANSLATIONS = {
         'badge_savings_star_desc': 'Recognized for consistent saving habits.',
     },
     'ha': {
+        'financial_personality_quiz_title': 'Gwajin Halin Kuɗi',
         # Quiz-specific
         'quiz_financial_personality_quiz': 'Tambayoyin Halin Kuɗi',
         'quiz_your_financial_personality_results': 'Sakamakon Halin Kuɗin Ka',

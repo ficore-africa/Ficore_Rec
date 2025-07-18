@@ -4,6 +4,7 @@ Debtors management translations for accounting tools
 
 DEBTORS_TRANSLATIONS = {
     'en': {
+        'they_owe_title': 'They Owe',
         'debtors_dashboard': 'They Owe',
         'debtors_dashboard_desc': 'Manage money owed to you by others.',
         'debtors_tooltip': 'Manage money owed to you by debtors.',
@@ -91,6 +92,7 @@ DEBTORS_TRANSLATIONS = {
         'debtors_search_debtors': 'Search debtors...',
     },
     'ha': {
+        'they_owe_title': 'Suna Bashi',
         'debtors_dashboard': 'Bashi',
         'debtors_list': 'Jerin Masu Bin Bashi',
         'debtors_add_debtor': 'Ƙara Mai Bin Bashi',

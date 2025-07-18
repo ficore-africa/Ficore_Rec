@@ -4,6 +4,7 @@ Agents management translations for accounting tools
 
 AGENTS_TRANSLATIONS = {
     'en': {
+        'agent_portal_title': 'Agent Portal',
         # General
         'general_username': 'Username',
         'lang_en': 'English',
@@ -220,6 +221,7 @@ AGENTS_TRANSLATIONS = {
         'coins_coins': 'coins',
     },
     'ha': {
+        'agent_portal_title': 'Tashar Wakili',
         # General
         'general_username': 'Sunan mai amfani',
         'general_email': 'Imel',

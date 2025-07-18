@@ -4,6 +4,7 @@ Inventory management translations for accounting tools
 
 INVENTORY_TRANSLATIONS = {
     'en': {
+        'inventory_title': 'Inventory',
         'inventory_list': 'Inventory List',
         'net_worth_net_worth': 'Net Worth',
         'inventory_adjust_stock': 'Adjust Stock',
@@ -73,6 +74,7 @@ INVENTORY_TRANSLATIONS = {
         'inventory_low_stock_alerts': 'Low Stock Alerts',
     },
     'ha': {
+        'inventory_title': 'Kaya',
         'inventory_dashboard': 'Kayan Sana\'a',
         'inventory_list': 'Jerin Kayan Ajiya',
         'inventory_add_item': 'Ƙara Abu',

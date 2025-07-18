@@ -4,6 +4,7 @@ Budget management translations for personal finance tools
 
 BUDGET_TRANSLATIONS = {
     'en': {
+        'budget_planner_title': 'Budget Planner',
         'budget_budget_planner': 'Budget',
         'budget_planner_title': 'Budget',
         'budget_completed_success': 'Budget completed successfully!',
@@ -122,6 +123,7 @@ BUDGET_TRANSLATIONS = {
         'budget_reduce_unnecessary_expenses': 'Reduce unnecessary expenses',
     },
     'ha': {
+        'budget_planner_title': 'Mai Tsara Kasafin Kuɗi',
         'budget_budget_planner': 'Kasafi',
         'budget_create_budget': 'Ƙirƙira Kasafin Kuɗi',
         'budget_monthly_budget': 'Kasafin Kuɗi na Wata-wata',

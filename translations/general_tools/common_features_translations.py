@@ -4,9 +4,9 @@ Common features translations including news, notifications, and shared functiona
 
 COMMON_FEATURES_TRANSLATIONS = {
     'en': {
+        'news_title': 'News',
         # News Management
         'news_article_not_found': 'Article not found',
-        'news_title': 'News',
         'tax_deadlines_title': 'Tax Deadlines',
         'news_content': 'Content',
         'tax_enter_your': 'Enter your income details',
@@ -306,6 +306,7 @@ COMMON_FEATURES_TRANSLATIONS = {
         'connection_failed': 'Connection failed'
     },
     'ha': {
+        'news_title': 'Labarai',
         # News Management
         'news_article_not_found': 'Ba a sami labarin ba',
         'news_content': 'Abun ciki',

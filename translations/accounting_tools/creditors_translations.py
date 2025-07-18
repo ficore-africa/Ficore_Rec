@@ -1,5 +1,6 @@
 CREDITORS_TRANSLATIONS = {
     'en': {
+        'i_owe_title': 'I Owe',
         'creditors_dashboard': 'I Owe',
         'creditors_dashboard_desc': 'Keep track of money you owe to others.',
         'creditors_tooltip': 'Manage your debts to creditors.',
@@ -114,6 +115,7 @@ CREDITORS_TRANSLATIONS = {
         'general_note': 'Note',
     },
     'ha': {
+        'i_owe_title': 'Na Bashi',
         'creditors_dashboard': 'Allon Masu Bashi',
         'creditors_list': 'Jerin Masu Bashi',
         'creditors_add_creditor': 'Ƙara Mai Bashi',

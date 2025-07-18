@@ -4,6 +4,7 @@ Financial health assessment translations for personal finance tools
 
 FINANCIAL_HEALTH_TRANSLATIONS = {
     'en': {
+        'financial_health_title': 'Financial Health',
         'financial_health_calculator': 'Financial Health',
         'financial_health_assessment': 'Financial Health Assessment',
         'financial_health_user_type': 'User Type',
@@ -105,6 +106,7 @@ FINANCIAL_HEALTH_TRANSLATIONS = {
         'submit': 'Sallama'
     },
     'ha': {
+        'financial_health_title': 'Lafiyar Kuɗi',
         'financial_health_calculator': 'Ƙididdiga',
         'financial_health_assessment': 'Ƙididdigar Lafiyar Kuɗi',
         'financial_health_score': 'Makin Lafiyar Kuɗi',
