@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, current_app, session, request
 from flask_login import current_user, login_required
 from datetime import datetime
-from models import get_budgets, get_bills, get_net_worth, get_financial_health, get_emergency_funds
+from models import get_budgets, get_bills
 from utils import get_mongo_db, trans, requires_role, logger  # Added logger
 from bson import ObjectId
 
@@ -45,64 +45,6 @@ def get_recent_activities(user_id=None, is_admin_user=False, db=None):
                 'surplus_deficit': budget.get('surplus_deficit', 0)
             },
             'icon': 'bi-cash-coin'
-        })
-
-    # Fetch recent net worth records
-    net_worths = db.net_worth_data.find(query).sort('created_at', -1).limit(5)
-    for nw in net_worths:
-        activities.append({
-            'type': 'net_worth',
-            'description': trans('recent_activity_net_worth_calculated', default='Calculated net worth: {amount}', amount=nw.get('net_worth', 0)),
-            'timestamp': nw.get('created_at', datetime.utcnow()).isoformat(),
-            'details': {
-                'net_worth': nw.get('net_worth', 0),
-                'total_assets': nw.get('total_assets', 0),
-                'total_liabilities': nw.get('total_liabilities', 0)
-            },
-            'icon': 'bi-graph-up'
-        })
-
-    # Fetch recent financial health scores
-    health_scores = db.financial_health_scores.find(query).sort('created_at', -1).limit(5)
-    for hs in health_scores:
-        activities.append({
-            'type': 'financial_health',
-            'description': trans('recent_activity_health_score', default='Calculated financial health score: {score}', score=hs.get('score', 0)),
-            'timestamp': hs.get('created_at', datetime.utcnow()).isoformat(),
-            'details': {
-                'score': hs.get('score', 0),
-                'status': hs.get('status', 'Unknown')
-            },
-            'icon': 'bi-heart-pulse'
-        })
-
-    # Fetch recent emergency fund plans
-    emergency_funds = db.emergency_funds.find(query).sort('created_at', -1).limit(5)
-    for ef in emergency_funds:
-        activities.append({
-            'type': 'emergency_fund',
-            'description': trans('recent_activity_emergency_fund_created', default='Created emergency fund plan with target: {amount}', amount=ef.get('target_amount', 0)),
-            'timestamp': ef.get('created_at', datetime.utcnow()).isoformat(),
-            'details': {
-                'target_amount': ef.get('target_amount', 0),
-                'savings_gap': ef.get('savings_gap', 0),
-                'monthly_savings': ef.get('monthly_savings', 0)
-            },
-            'icon': 'bi-piggy-bank'
-        })
-
-    # Fetch recent quiz results
-    quizzes = db.quiz_responses.find(query).sort('created_at', -1).limit(5)
-    for quiz in quizzes:
-        activities.append({
-            'type': 'quiz',
-            'description': trans('recent_activity_quiz_completed', default='Completed financial quiz with score: {score}', score=quiz.get('score', 0)),
-            'timestamp': quiz.get('created_at', datetime.utcnow()).isoformat(),
-            'details': {
-                'score': quiz.get('score', 0),
-                'personality': quiz.get('personality', 'N/A')
-            },
-            'icon': 'bi-question-circle'
         })
 
     # Fetch recent learning hub progress
@@ -213,57 +155,6 @@ def bill_summary():
         logger.error(f"Error fetching bill summary for user {current_user.id}: {str(e)}", 
                      extra={'session_id': session.get('sid', 'no-session-id'), 'ip_address': request.remote_addr})
         return jsonify({'error': trans('bill_summary_error', default='Error fetching bill summary')}), 500
-
-@summaries_bp.route('/net_worth/summary')
-@login_required
-@requires_role(['personal', 'admin'])
-def net_worth_summary():
-    """Fetch the latest net worth for the authenticated user."""
-    try:
-        db = get_mongo_db()
-        net_worth_records = get_net_worth(db, {'user_id': current_user.id})
-        net_worth = net_worth_records[0].get('net_worth', 0) if net_worth_records else 0
-        logger.info(f"Fetched net worth summary for user {current_user.id}: {net_worth}", 
-                    extra={'session_id': session.get('sid', 'no-session-id'), 'ip_address': request.remote_addr})
-        return jsonify({'netWorth': net_worth}), 200
-    except Exception as e:
-        logger.error(f"Error fetching net worth summary for user {current_user.id}: {str(e)}", 
-                     extra={'session_id': session.get('sid', 'no-session-id'), 'ip_address': request.remote_addr})
-        return jsonify({'error': trans('net_worth_summary_error', default='Error fetching net worth summary')}), 500
-
-@summaries_bp.route('/financial_health/summary')
-@login_required
-@requires_role(['personal', 'admin'])
-def financial_health_summary():
-    """Fetch the latest financial health score for the authenticated user."""
-    try:
-        db = get_mongo_db()
-        health_records = get_financial_health(db, {'user_id': current_user.id})
-        score = health_records[0].get('score', 0) if health_records else 0
-        logger.info(f"Fetched financial health summary for user {current_user.id}: {score}", 
-                    extra={'session_id': session.get('sid', 'no-session-id'), 'ip_address': request.remote_addr})
-        return jsonify({'score': score}), 200
-    except Exception as e:
-        logger.error(f"Error fetching financial health summary for user {current_user.id}: {str(e)}", 
-                     extra={'session_id': session.get('sid', 'no-session-id'), 'ip_address': request.remote_addr})
-        return jsonify({'error': trans('financial_health_summary_error', default='Error fetching financial health summary')}), 500
-
-@summaries_bp.route('/emergency_fund/summary')
-@login_required
-@requires_role(['personal', 'admin'])
-def emergency_fund_summary():
-    """Fetch the latest emergency fund savings for the authenticated user."""
-    try:
-        db = get_mongo_db()
-        funds = get_emergency_funds(db, {'user_id': current_user.id})
-        total_savings = funds[0].get('current_savings', 0) if funds else 0
-        logger.info(f"Fetched emergency fund summary for user {current_user.id}: {total_savings}", 
-                    extra={'session_id': session.get('sid', 'no-session-id'), 'ip_address': request.remote_addr})
-        return jsonify({'totalSavings': total_savings}), 200
-    except Exception as e:
-        logger.error(f"Error fetching emergency fund summary for user {current_user.id}: {str(e)}", 
-                     extra={'session_id': session.get('sid', 'no-session-id'), 'ip_address': request.remote_addr})
-        return jsonify({'error': trans('emergency_fund_summary_error', default='Error fetching emergency fund summary')}), 500
 
 @summaries_bp.route('/recent_activity')
 @login_required

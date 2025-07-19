@@ -440,38 +440,8 @@ def main():
                 'others': format_currency(0.0),
                 'others_raw': 0.0,
                 'created_at': 'N/A'
-            }
-        categories = {
-            trans('budget_housing_rent', default='Housing/Rent'): latest_budget.get('housing_raw', 0.0),
-            trans('budget_food', default='Food'): latest_budget.get('food_raw', 0.0),
-            trans('budget_transport', default='Transport'): latest_budget.get('transport_raw', 0.0),
-            trans('budget_dependents_support', default='Dependents Support'): latest_budget.get('dependents_raw', 0),
-            trans('budget_miscellaneous', default='Miscellaneous'): latest_budget.get('miscellaneous_raw', 0.0),
-            trans('budget_others', default='Others'): latest_budget.get('others_raw', 0.0)
-        }
-        categories = {k: v for k, v in categories.items() if v > 0}
-        tips = [
-            trans("budget_tip_track_expenses", default='Track your expenses daily to stay within budget.'),
-            trans("budget_tip_ajo_savings", default='Contribute to ajo savings for financial discipline.'),
-            trans("budget_tip_data_subscriptions", default='Optimize data subscriptions to reduce costs.'),
-            trans("budget_tip_plan_dependents", default='Plan for dependents’ expenses in advance.')
-        ]
-        insights = []
-        try:
-            income_float = float(latest_budget.get('income_raw', 0.0))
-            surplus_deficit_float = float(latest_budget.get('surplus_deficit', 0.0))
-            savings_goal_float = float(latest_budget.get('savings_goal_raw', 0.0))
-            if income_float > 0:
-                if surplus_deficit_float < 0:
-                    insights.append(trans("budget_insight_budget_deficit", default='Your expenses exceed your income. Consider reducing costs.'))
-                elif surplus_deficit_float > 0:
-                    insights.append(trans("budget_insight_budget_surplus", default='You have a surplus. Consider increasing savings.'))
-                if savings_goal_float == 0:
-                    insights.append(trans("budget_insight_set_savings_goal", default='Set a savings goal to build financial security.'))
-                if income_float > 0 and latest_budget.get('housing_raw', 0.0) / income_float > 0.4:
-                    insights.append(trans("budget_insight_high_housing", default='Housing costs exceed 40% of income. Consider cost-saving measures.'))
-        except (ValueError, TypeError) as e:
-            current_app.logger.warning(f"Error parsing budget amounts for insights: {str(e)}", extra={'session_id': session.get('sid', 'unknown')})
+                except (ValueError, TypeError) as e:
+                    current_app.logger.warning(f"Error parsing budget amounts for insights: {str(e)}", extra={'session_id': session.get('sid', 'unknown')})
         current_app.logger.debug(f"Latest budget: {latest_budget}", extra={'session_id': session.get('sid', 'unknown')})
         current_app.logger.debug(f"Categories: {categories}", extra={'session_id': session.get('sid', 'unknown')})
         return render_template(

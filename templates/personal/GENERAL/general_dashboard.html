@@ -31,25 +31,6 @@
       <div class="col-md-6 mb-4">
         <div class="card h-100">
           <div class="card-body">
-            <h3>{{ t('financial_health_financial_health_score', default='Financial Health') }}</h3>
-            {% if data.financial_health is defined and data.financial_health.score is not none %}
-              <p>{{ t('general_score', default='Score') }}: {{ data.financial_health.score | format_number }} / 100</p>
-              {% if data.financial_health.status %}
-                <p>{{ t('general_status', default='Status') }}: {{ t('financial_health_' + data.financial_health.status, default=data.financial_health.status) }}</p>
-              {% endif %}
-            {% else %}
-              <p>{{ t('general_not_calculated', default='Not yet calculated.') }}</p>
-            {% endif %}
-            <a href="{{ url_for('financial_health.main') }}" class="btn btn-primary" aria-label="{{ t('financial_health_go_financial_health', default='Go to Financial Health') }}">
-              <i class="fas fa-heartbeat"></i> {{ t('financial_health_go_financial_health', default='Go to Financial Health') }}
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
             <h3>{{ t('budget_budget_planner', default='Budget Planner') }}</h3>
             {% if data.budget is defined and data.budget.surplus_deficit is not none %}
               <p>{{ t('budget_surplus_deficit', default='Surplus/Deficit') }}: {{ data.budget.surplus_deficit | format_currency }}</p>
@@ -76,57 +57,6 @@
             {% endif %}
             <a href="{{ url_for('bill.main') }}" class="btn btn-primary" aria-label="{{ t('bill_go_bill', default='Go to Bill Planner') }}">
               <i class="fas fa-file-invoice"></i> {{ t('bill_go_bill', default='Go to Bill Planner') }}
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <h3>{{ t('net_worth_net_worth_calculator', default='Net Worth') }}</h3>
-            {% if data.net_worth is defined and data.net_worth.net_worth is not none %}
-              <p>{{ t('net_worth_net_worth', default='Net Worth') }}: {{ data.net_worth.net_worth | format_currency }}</p>
-              <p>{{ t('net_worth_total_assets', default='Total Assets') }}: {{ data.net_worth.total_assets | default(0) | format_currency }}</p>
-            {% else %}
-              <p>{{ t('general_not_calculated', default='Not yet calculated.') }}</p>
-            {% endif %}
-            <a href="{{ url_for('net_worth.main') }}" class="btn btn-primary" aria-label="{{ t('net_worth_go_net_worth', default='Go to Net Worth') }}">
-              <i class="fas fa-balance-scale"></i> {{ t('net_worth_go_net_worth', default='Go to Net Worth') }}
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <h3>{{ t('emergency_fund_emergency_fund_calculator', default='Emergency Fund') }}</h3>
-            {% if data.emergency_fund is defined and data.emergency_fund.target_amount is not none %}
-              <p>{{ t('emergency_fund_target_amount', default='Target Amount') }}: {{ data.emergency_fund.target_amount | default(0) | format_currency }}</p>
-              <p>{{ t('emergency_fund_savings_gap', default='Savings Gap') }}: {{ data.emergency_fund.savings_gap | default(0) | format_currency }}</p>
-            {% else %}
-              <p>{{ t('general_not_calculated', default='Not yet calculated.') }}</p>
-            {% endif %}
-            <a href="{{ url_for('emergency_fund.main') }}" class="btn btn-primary" aria-label="{{ t('emergency_fund_go_emergency_fund', default='Go to Emergency Fund') }}">
-              <i class="fas fa-piggy-bank"></i> {{ t('emergency_fund_go_emergency_fund', default='Go to Emergency Fund') }}
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <h3>{{ t('quiz_personality_quiz', default='Personality Quiz') }}</h3>
-            {% if data.quiz is defined and data.quiz.personality is not none %}
-              <p>{{ t('quiz_personality', default='Personality') }}: {{ t('quiz_' + data.quiz.personality, default=data.quiz.personality) }}</p>
-              <p>{{ t('general_score', default='Score') }}: {{ data.quiz.score | default(0) | format_number }} / 10</p>
-            {% else %}
-              <p>{{ t('quiz_not_completed', default='Quiz not completed.') }}</p>
-            {% endif %}
-            <a href="{{ url_for('quiz.main') }}" class="btn btn-primary" aria-label="{{ t('quiz_go_personality_quiz', default='Go to Personality Quiz') }}">
-              <i class="fas fa-question-circle"></i> {{ t('quiz_go_personality_quiz', default='Go to Personality Quiz') }}
             </a>
           </div>
         </div>
@@ -169,24 +99,20 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const ctx = document.getElementById('overviewChart').getContext('2d');
-      const financialHealthScore = {{ data.financial_health.score | default(0) }};
-      const rawNetWorth = {{ data.net_worth.net_worth | default(0) }};
-      const rawSavingsGap = {{ data.emergency_fund.savings_gap | default(0) }};
-      const netWorth = rawNetWorth / 1000000;
-      const savingsGap = rawSavingsGap / 1000000;
+      const budgetSurplus = {{ data.budget.surplus_deficit | default(0) }} / 1000000;
+      const totalBills = {{ data.bills.total_amount | default(0) }} / 1000000;
       new Chart(ctx, {
         type: 'bar',
         data: {
           labels: [
-            "{{ t('financial_health_financial_health_score', default='Financial Health') }}",
-            "{{ t('net_worth_net_worth', default='Net Worth') }} (₦M)",
-            "{{ t('emergency_fund_savings_gap', default='Savings Gap') }} (₦M)"
+            "{{ t('budget_surplus_deficit', default='Budget Surplus') }} (₦M)",
+            "{{ t('bill_total_bills', default='Total Bills') }} (₦M)"
           ],
           datasets: [{
-            label: "{{ t('general_financial_metrics', default='Financial Metrics') }}",
-            data: [financialHealthScore, netWorth, savingsGap],
-            backgroundColor: ['#2E7D32', '#0288D1', '#dc3545'],
-            borderColor: ['#1B5E20', '#01579B', '#bd2130'],
+            label: "{{ t('general_financial_overview', default='Financial Overview') }}",
+            data: [budgetSurplus, totalBills],
+            backgroundColor: ['#2E7D32', '#dc3545'],
+            borderColor: ['#1B5E20', '#bd2130'],
             borderWidth: 1
           }]
         },
@@ -194,7 +120,7 @@
           scales: {
             y: {
               beginAtZero: true,
-              max: Math.max(financialHealthScore, netWorth, savingsGap, 100) * 1.1,
+              max: Math.max(budgetSurplus, totalBills, 1) * 1.1,
               title: {
                 display: true,
                 text: "{{ t('general_value', default='Value') }}"
@@ -210,9 +136,6 @@
                 label: function(context) {
                   let label = context.dataset.label || '';
                   let value = context.parsed.y;
-                  if (context.dataIndex === 0) {
-                    return `${label}: ${value}`;
-                  }
                   return `${label}: ₦${(value * 1000000).toLocaleString('en-NG')}`;
                 }
               }
@@ -221,9 +144,6 @@
               anchor: 'end',
               align: 'top',
               formatter: (value, context) => {
-                if (context.dataIndex === 0) {
-                  return value.toFixed(1);
-                }
                 return `${value.toFixed(1)}M`;
               },
               color: 'black',
