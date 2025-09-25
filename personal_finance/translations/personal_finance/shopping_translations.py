@@ -3,9 +3,8 @@ SHOPPING_TRANSLATIONS = {
         # Shopping module
         'shopping_name_required': 'Shopping list name is required',
         'shopping_budget_required': 'Budget amount is required',
-        # Shopping module
         'shopping_budget_placeholder': 'Enter budget amount',
-        # Shopping module
+        'shopping_create_first': 'Create Your First Shopping List',
         'shopping_unit': 'Unit',
         'shopping_unit_piece': 'Piece',
         # Shopping module
@@ -337,6 +336,7 @@ SHOPPING_TRANSLATIONS = {
         'shopping_quantity_positive': 'Yawa dole ne ya zama tabbatacce',
         'shopping_frequency_required': 'Yawan sayayya ana buƙata',
         'shopping_frequency_range': 'Yawan dole ne ya kasance tsakanin kwanaki 1 da 365',
+        'shopping_create_first': 'Ƙirƙiri Jerin Siyayyarka na Farko',
         'shopping_item_submit': 'Ƙaddamar da Abu',
         'shopping_email_required': 'Adireshin imel ana buƙata',
         'shopping_title': 'Jerin Sayayya',
